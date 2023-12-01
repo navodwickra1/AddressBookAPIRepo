@@ -8,6 +8,6 @@ namespace AddressBookAPI.Data.Interfaces
         Task Delete(AddressBookRecord record);
         Task Update (AddressBookRecord record);
         Task<IEnumerable<AddressBookRecord>> GetAll();
-
+        Task<IEnumerable<AddressBookRecord>> Search(string query);
     }
 }
