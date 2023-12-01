@@ -4,7 +4,7 @@ namespace AddressBookAPI.Data.Interfaces;
 
 public interface IDataRepo
 {
-    Task<IEnumerable<AddressBookRecord>> GetAll();
-    Task Save(IEnumerable<AddressBookRecord> records);
+    Task<IEnumerable<AddressBookRecord>> GetAllAsync();
+    Task SaveAsync(IEnumerable<AddressBookRecord> records);
     
 }

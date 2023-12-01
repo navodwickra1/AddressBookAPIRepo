@@ -4,10 +4,10 @@ namespace AddressBookAPI.Data.Interfaces
 {
     public interface IDataService
     {
-        Task Add(AddressBookRecord record);
-        Task Delete(AddressBookRecord record);
-        Task Update (AddressBookRecord record);
-        Task<IEnumerable<AddressBookRecord>> GetAll();
-        Task<IEnumerable<AddressBookRecord>> Search(string query);
+        Task AddAsync(AddressBookRecord record);
+        Task DeleteAsync(AddressBookRecord record);
+        Task UpdateAsync(AddressBookRecord record);
+        Task<IEnumerable<AddressBookRecord>> GetAllAsync();
+        Task<IEnumerable<AddressBookRecord>> SearchAsync(string query);
     }
 }

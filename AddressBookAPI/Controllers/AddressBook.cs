@@ -25,7 +25,7 @@ namespace AddressBookAPI.Controllers
         {
             try
             {
-                var allRecords = await _dataService.GetAll();
+                var allRecords = await _dataService.GetAllAsync();
                 return Ok(allRecords);
             }
             catch (Exception ex)
@@ -40,7 +40,7 @@ namespace AddressBookAPI.Controllers
         {
             try
             {
-                var result = await _dataService.Search(query);
+                var result = await _dataService.SearchAsync(query);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -60,7 +60,7 @@ namespace AddressBookAPI.Controllers
                 {
                     return BadRequest(new { message = validation.Errors });
                 }
-                await _dataService.Delete(record);
+                await _dataService.DeleteAsync(record);
                 return Ok(new { message = $"record Id {record.Id} deleted" });
             }
             catch (Exception ex)
@@ -80,7 +80,7 @@ namespace AddressBookAPI.Controllers
                 {
                     return BadRequest(new { message = validation.Errors });
                 }
-                await _dataService.Add(record);
+                await _dataService.AddAsync(record);
                 return Ok(new { message = $"record added" });
             }
             catch (Exception ex)
@@ -100,7 +100,7 @@ namespace AddressBookAPI.Controllers
                 {
                     return BadRequest(new { message = validation.Errors });
                 }
-                await _dataService.Update(record);
+                await _dataService.UpdateAsync(record);
                 return Ok(new { message = $"record updated" });
             }
             catch (Exception ex)

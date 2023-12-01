@@ -15,18 +15,18 @@ namespace AddressBookAPI.Data.Implementations
             _dataRepo = dataRepo;
         }
 
-        public async Task Add(AddressBookRecord record)
+        public async Task AddAsync(AddressBookRecord record)
         {
             try
             {
-                var records = await GetAll();
+                var records = await GetAllAsync();
                 List<AddressBookRecord> exisitingRecords = records.ToList();
                 var maxId = exisitingRecords.Max(r => r.Id);
                 record.Id = maxId + 1;
                 exisitingRecords.Add(record);
 
                 exisitingRecords = exisitingRecords.OrderBy(r => r.Id).ToList();
-                await _dataRepo.Save(exisitingRecords);
+                await _dataRepo.SaveAsync(exisitingRecords);
             }
             catch (Exception ex)
             {
@@ -34,18 +34,18 @@ namespace AddressBookAPI.Data.Implementations
             }
         }
 
-        public async Task Delete(AddressBookRecord record)
+        public async Task DeleteAsync(AddressBookRecord record)
         {
             try
             {
-                var records = await GetAll();
+                var records = await GetAllAsync();
                 var exisitingRecord = records.Where(r => r.Id == record.Id).FirstOrDefault();
                 if (exisitingRecord != null)
                 {
                     List<AddressBookRecord> exisitingRecords = records.ToList();
                     exisitingRecords.Remove(exisitingRecord);
                     exisitingRecords = exisitingRecords.OrderBy(r => r.Id).ToList();
-                    _dataRepo.Save(exisitingRecords);
+                    _dataRepo.SaveAsync(exisitingRecords);
                     _logger.LogInformation($"Record with Id {record.Id} has been deleted");
                 }
                 else
@@ -59,12 +59,12 @@ namespace AddressBookAPI.Data.Implementations
             }
         }
 
-        public async Task<IEnumerable<AddressBookRecord>> GetAll()
+        public async Task<IEnumerable<AddressBookRecord>> GetAllAsync()
         {
             var retValue = new List<AddressBookRecord>();
             try
             {
-                var data = await _dataRepo.GetAll();
+                var data = await _dataRepo.GetAllAsync();
                 retValue.AddRange(data);
                 _logger.LogInformation($"found {data.Count()} records");
             }
@@ -75,11 +75,11 @@ namespace AddressBookAPI.Data.Implementations
             return retValue;
         }
 
-        public async Task Update(AddressBookRecord record)
+        public async Task UpdateAsync(AddressBookRecord record)
         {
             try
             {
-                var records = await GetAll();
+                var records = await GetAllAsync();
                 var exisitingRecord = records.Where(r => r.Id == record.Id).FirstOrDefault();
                 if (exisitingRecord != null)
                 {
@@ -93,7 +93,7 @@ namespace AddressBookAPI.Data.Implementations
 
                     exisitingRecords.Add(exisitingRecord);
                     exisitingRecords = exisitingRecords.OrderBy(r => r.Id).ToList();
-                    _dataRepo.Save((exisitingRecords));
+                    _dataRepo.SaveAsync((exisitingRecords));
                     _logger.LogInformation($"Record with Id {record.Id} has been deleted");
                 }
                 else
@@ -107,12 +107,12 @@ namespace AddressBookAPI.Data.Implementations
             }
         }
 
-        public async Task<IEnumerable<AddressBookRecord>> Search(string query)
+        public async Task<IEnumerable<AddressBookRecord>> SearchAsync(string query)
         {
             var retValue = new List<AddressBookRecord>();
             try
             {
-                var records = await GetAll();
+                var records = await GetAllAsync();
                 retValue = records.Where(r => r.Email.Contains(query, StringComparison.OrdinalIgnoreCase) ||
                                               r.FirstName.Contains(query, StringComparison.OrdinalIgnoreCase) ||
                                               r.LastName.Contains(query, StringComparison.OrdinalIgnoreCase) ||

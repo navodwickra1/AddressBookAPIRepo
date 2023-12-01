@@ -18,7 +18,7 @@ namespace AddressBookAPI.Data.Implementations
             _fileName = _configuration.GetValue<string>("DataFileName");
         }
         
-        public async Task<IEnumerable<AddressBookRecord>> GetAll()
+        public async Task<IEnumerable<AddressBookRecord>> GetAllAsync()
         {
             var retValue = new List<AddressBookRecord>();
             var data = await ReadJsonFile();
@@ -29,7 +29,7 @@ namespace AddressBookAPI.Data.Implementations
             return retValue;
         }
 
-        public async Task Save(IEnumerable<AddressBookRecord> records)
+        public async Task SaveAsync(IEnumerable<AddressBookRecord> records)
         {
             var recordsString = JsonConvert.SerializeObject(records);
             await WriteJsonData(recordsString);
