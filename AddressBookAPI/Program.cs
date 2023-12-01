@@ -1,5 +1,6 @@
 using AddressBookAPI.Data.Implementations;
 using AddressBookAPI.Data.Interfaces;
+using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
@@ -7,7 +8,11 @@ builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 builder.Services.AddLogging();
 builder.Logging.AddLog4Net(configuration.GetValue<string>("Log4netConfig"));
-builder.Services.AddScoped<IDataRepo,FileDataRepo>();
+builder.Services.AddFluentValidation(conf =>
+{
+    conf.RegisterValidatorsFromAssembly(typeof(Program).Assembly);
+});
+builder.Services.AddScoped<IDataRepo, FileDataRepo>();
 builder.Services.AddScoped<IDataService, FileDataService>();
 var app = builder.Build();
 

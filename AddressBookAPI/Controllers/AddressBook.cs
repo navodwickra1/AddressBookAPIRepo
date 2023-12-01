@@ -1,5 +1,6 @@
 ﻿using AddressBookAPI.Data.Interfaces;
 using AddressBookAPI.Data.Models;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AddressBookAPI.Controllers
@@ -10,11 +11,12 @@ namespace AddressBookAPI.Controllers
     {
         private readonly IDataService _dataService;
         private readonly ILogger<AddressBook> _logger;
-
-        public AddressBook(IDataService dataService, ILogger<AddressBook> logger)
+        private readonly IValidator<AddressBookRecord> _validator;
+        public AddressBook(IDataService dataService, ILogger<AddressBook> logger, IValidator<AddressBookRecord> validator)
         {
             _dataService = dataService;
             _logger = logger;
+            _validator = validator;
         }
 
         [HttpGet]
@@ -53,6 +55,11 @@ namespace AddressBookAPI.Controllers
         {
             try
             {
+                var validation = await _validator.ValidateAsync(record);
+                if (!validation.IsValid)
+                {
+                    return BadRequest(new { message = validation.Errors });
+                }
                 await _dataService.Delete(record);
                 return Ok(new { message = $"record Id {record.Id} deleted" });
             }
@@ -68,6 +75,11 @@ namespace AddressBookAPI.Controllers
         {
             try
             {
+                var validation = await _validator.ValidateAsync(record);
+                if (!validation.IsValid)
+                {
+                    return BadRequest(new { message = validation.Errors });
+                }
                 await _dataService.Add(record);
                 return Ok(new { message = $"record added" });
             }
@@ -83,6 +95,11 @@ namespace AddressBookAPI.Controllers
         {
             try
             {
+                var validation = await _validator.ValidateAsync(record);
+                if (!validation.IsValid)
+                {
+                    return BadRequest(new { message = validation.Errors });
+                }
                 await _dataService.Update(record);
                 return Ok(new { message = $"record updated" });
             }
